@@ -1,0 +1,33 @@
+.App {
+    text-align: center;
+    margin-top: 50px;
+}
+
+input {
+    padding: 10px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    width: 300px;
+}
+
+button {
+    padding: 10px 20px;
+}
+
+/* Style the video grid so each row contains 3 videos */
+.video-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.video-container {
+    flex: 0 0 30%; /* Each video takes about 1/3rd of the row */
+    margin: 10px;
+}
+
+h3 {
+    margin-bottom: 10px;
+    font-size: 18px;
+    text-align: center;
+}
