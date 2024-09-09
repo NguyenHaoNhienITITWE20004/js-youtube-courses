@@ -1,3 +1,11 @@
+body {
+    background-color: #121212; /* Dark background */
+    color: #ffffff; /* Light text color for contrast */
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
 .App {
     text-align: center;
     margin-top: 50px;
@@ -8,13 +16,23 @@ input {
     margin-right: 10px;
     margin-bottom: 10px;
     width: 300px;
+    background-color: #333; /* Dark input background */
+    color: #fff; /* Light text color */
+    border: 1px solid #555; /* Border to differentiate inputs */
 }
 
 button {
     padding: 10px 20px;
+    background-color: #444; /* Dark button background */
+    color: #fff; /* Light button text */
+    border: none;
+    cursor: pointer;
 }
 
-/* Style the video grid so each row contains 3 videos */
+button:hover {
+    background-color: #666; /* Lighter shade on hover */
+}
+
 .video-grid {
     display: flex;
     flex-wrap: wrap;
@@ -22,8 +40,13 @@ button {
 }
 
 .video-container {
-    flex: 0 0 30%; /* Each video takes about 1/3rd of the row */
+    flex: 0 0 30%;
     margin: 10px;
+    padding: 10px;
+    border: 1px solid #333;
+    background-color: #222; /* Dark container background */
+    border-radius: 5px;
+    text-align: center;
 }
 
 h3 {
@@ -31,3 +54,12 @@ h3 {
     font-size: 18px;
     text-align: center;
 }
+
+h1, h3 {
+    color: #fff; /* Light color for headings */
+}
+
+iframe {
+    border: none;
+}
+

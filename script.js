@@ -18,27 +18,25 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     // Save videos to localStorage
-    const saveVideo = (video) => {
-        const savedVideos = localStorage.getItem("videos");
-        let videos = [];
-        if (savedVideos) {
-            try {
-                videos = JSON.parse(savedVideos);
-            } catch (error) {
-                console.error("Error parsing videos from localStorage", error);
-            }
-        }
-        videos.push(video);
+    const saveVideos = (videos) => {
         localStorage.setItem("videos", JSON.stringify(videos));
+    };
+
+    // Get all saved videos from localStorage
+    const getSavedVideos = () => {
+        const savedVideos = localStorage.getItem("videos");
+        return savedVideos ? JSON.parse(savedVideos) : [];
     };
 
     // Display a video on the page
     const displayVideo = (video) => {
         const videoContainer = document.createElement("div");
         videoContainer.className = "video-container";
+        videoContainer.dataset.videoId = video.id;
 
         const title = document.createElement("h3");
         title.textContent = video.title;
+        title.contentEditable = false;
 
         const iframe = document.createElement("iframe");
         iframe.width = "100%";
@@ -49,8 +47,32 @@ document.addEventListener("DOMContentLoaded", () => {
         iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
         iframe.allowFullscreen = true;
 
+        // Add Edit button
+        const editButton = document.createElement("button");
+        editButton.textContent = "Edit Title";
+        editButton.addEventListener("click", () => {
+            if (title.contentEditable === "true") {
+                title.contentEditable = "false";
+                editButton.textContent = "Edit Title";
+                updateVideoTitle(video.id, title.textContent);
+            } else {
+                title.contentEditable = "true";
+                editButton.textContent = "Save Title";
+            }
+        });
+
+        // Add Delete button
+        const deleteButton = document.createElement("button");
+        deleteButton.textContent = "Delete Video";
+        deleteButton.addEventListener("click", () => {
+            deleteVideo(video.id);
+            videoContainer.remove();
+        });
+
         videoContainer.appendChild(title);
         videoContainer.appendChild(iframe);
+        videoContainer.appendChild(editButton);
+        videoContainer.appendChild(deleteButton);
         videoGrid.appendChild(videoContainer);
     };
 
@@ -63,7 +85,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (videoId && title) {
             const embedUrl = `https://www.youtube.com/embed/${videoId}`;
-            const video = { title, url: embedUrl };
+            const video = { id: videoId, title, url: embedUrl };
             displayVideo(video);
             saveVideo(video);
             urlInput.value = "";
@@ -79,6 +101,32 @@ document.addEventListener("DOMContentLoaded", () => {
             /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
         const match = url.match(regex);
         return match && match[2].length === 11 ? match[2] : null;
+    };
+
+    // Update video title in localStorage
+    const updateVideoTitle = (id, newTitle) => {
+        let videos = getSavedVideos();
+        videos = videos.map(video => {
+            if (video.id === id) {
+                video.title = newTitle;
+            }
+            return video;
+        });
+        saveVideos(videos);
+    };
+
+    // Save a single video to localStorage
+    const saveVideo = (video) => {
+        const videos = getSavedVideos();
+        videos.push(video);
+        saveVideos(videos);
+    };
+
+    // Delete a video from localStorage
+    const deleteVideo = (id) => {
+        let videos = getSavedVideos();
+        videos = videos.filter(video => video.id !== id);
+        saveVideos(videos);
     };
 
     // Initial load of videos
