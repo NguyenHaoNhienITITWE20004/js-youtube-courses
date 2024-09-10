@@ -33,6 +33,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const videoContainer = document.createElement("div");
         videoContainer.className = "video-container";
         videoContainer.dataset.videoId = video.id;
+        videoContainer.style.position = "relative"; // Ensure the checkbox can be positioned inside
 
         const title = document.createElement("h3");
         title.textContent = video.title;
@@ -46,6 +47,27 @@ document.addEventListener("DOMContentLoaded", () => {
         iframe.frameBorder = "0";
         iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
         iframe.allowFullscreen = true;
+
+        // Create Checkbox
+        const checkbox = document.createElement("input");
+        checkbox.type = "checkbox";
+        checkbox.className = "video-checkbox"; // Add a class for styling if needed
+
+        // Create "done" message
+        const doneMessage = document.createElement("span");
+        doneMessage.textContent = "Done";
+        doneMessage.style.display = "none"; // Hidden initially
+        doneMessage.style.color = "green"; // Style the message
+
+        // Checkbox click event
+        checkbox.addEventListener("change", () => {
+            if (checkbox.checked) {
+                doneMessage.style.display = "inline";
+            } else {
+                doneMessage.style.display = "none";
+            }
+        });
+
 
         // Add Edit button
         const editButton = document.createElement("button");
@@ -68,7 +90,9 @@ document.addEventListener("DOMContentLoaded", () => {
             deleteVideo(video.id);
             videoContainer.remove();
         });
-
+        // Append elements to video container
+        videoContainer.appendChild(checkbox); // Append the checkbox
+        videoContainer.appendChild(doneMessage); // Append the done message
         videoContainer.appendChild(title);
         videoContainer.appendChild(iframe);
         videoContainer.appendChild(editButton);
